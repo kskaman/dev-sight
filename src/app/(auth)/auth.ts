@@ -12,4 +12,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   })
   ],
   // adapter: PrismaAdapter(prisma),
+  callbacks: {
+    redirect({ url, baseUrl }) {
+      // `url` is what signIn() passed in (if any)
+      return url ?? `${baseUrl}/chat`;
+    },
+  },
 });
