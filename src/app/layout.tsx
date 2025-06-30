@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Metadata } from "next";
 
 import "./globals.css";
+
 import Providers from "./providers";
 
 const geistSans = Geist({
@@ -53,7 +54,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_COLOR_SCRIPT }} />
       </head>
-      <body className="antialiased">
+      <body className="antialiase">
         <Providers>{children}</Providers>
       </body>
     </html>
