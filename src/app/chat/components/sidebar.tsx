@@ -1,13 +1,10 @@
 "use client";
 
-import { logout } from "@/app/(auth)/actions";
+import { logout } from "@/app/api/actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { OutlineButton } from "@/components/ui/outline-button-wrapper";
 import { ChevronLeft, ChevronRight, LogOut, Plus, Search } from "lucide-react";
 import { User } from "next-auth";
-import Image from "next/image";
-import logoSrc from "../../../../public/logo.png";
 
 interface Props {
   user: User;
@@ -25,19 +22,10 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
       border border-gray-200 rounded-lg px-2 py-2`}
     >
       {/* Toggle */}
-      <div className="pb-4 flex flex-row justify-between">
-        {!isMinimized && (
-          <div>
-            <Image src={logoSrc} alt={"devSight logo"} width={40} />
-          </div>
-        )}
-        <Button
-          variant="outline"
-          onClick={onMinimize}
-          className="rounded-full p-2 cursor-pointer"
-        >
+      <div className={`pb-4 flex flex-row ${isMinimized ? "" : "ml-auto"}`}>
+        <OutlineButton onClick={onMinimize}>
           {isMinimized ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-        </Button>
+        </OutlineButton>
       </div>
 
       {/* New chat + search */}

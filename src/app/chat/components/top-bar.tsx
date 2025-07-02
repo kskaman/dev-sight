@@ -1,6 +1,8 @@
 "use client";
 
 import { Menu } from "lucide-react";
+import Image from "next/image";
+import logoSrc from "../../../../public/logo.png";
 
 export default function Topbar({ onToggle }: { onToggle: () => void }) {
   return (
@@ -13,6 +15,9 @@ export default function Topbar({ onToggle }: { onToggle: () => void }) {
         <button onClick={onToggle} className="mr-2 cursor-pointer">
           <Menu size={20} />
         </button>
+      </div>
+      <div>
+        <Image src={logoSrc} alt={"devSight logo"} width={40} />
       </div>
       <h1 className="text-lg font-semibold">devSight</h1>
     </header>

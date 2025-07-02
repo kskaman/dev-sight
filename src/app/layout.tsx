@@ -54,7 +54,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_COLOR_SCRIPT }} />
       </head>
-      <body className="antialiase">
+      <body className="antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>
