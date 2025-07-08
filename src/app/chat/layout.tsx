@@ -1,8 +1,7 @@
 import { ReactNode } from "react";
 import { auth } from "../api/auth/auth";
 import ClientShell from "./components/client-shell";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "../../../lib/query-client";
+import { redirect } from "next/navigation";
 
 export default async function ChatLayout({
   children,
@@ -11,9 +10,9 @@ export default async function ChatLayout({
 }) {
   const session = await auth();
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ClientShell user={session!.user!}>{children}</ClientShell>;
-    </QueryClientProvider>
-  );
+  if (!session?.user) {
+    redirect("/");
+  }
+
+  return <ClientShell user={session.user}>{children}</ClientShell>;
 }

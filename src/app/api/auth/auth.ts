@@ -15,13 +15,19 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   callbacks: {
     redirect({ url, baseUrl }) {
-    if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
       try {
         const u = new URL(url);
         return u.origin === baseUrl ? url : baseUrl;
       } catch {
         return baseUrl;
       }
+    },
+    session({ session, token }) {
+      if (token?.sub) {
+        session.user.id = token.sub;
+      }
+      return session;
     },
   },
 });

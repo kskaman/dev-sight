@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Topbar from "./top-bar";
-import Sidebar from "./sidebar";
+import Sidebar from "./side-bar";
 import { User } from "next-auth";
 
 interface Props {
@@ -15,7 +15,7 @@ export default function ClientShell({ user, children }: Props) {
   const [mini, setMini] = useState(false); // desktop minimise
 
   return (
-    <div className="h-screen flex flex-row bg-slate-50 p-2 gap-2">
+    <div className="h-screen flex flex-row bg-background p-2 gap-2">
       {/* sidebar – desktop */}
       <div className="hidden lg:flex">
         <Sidebar
@@ -44,7 +44,7 @@ export default function ClientShell({ user, children }: Props) {
             />
           </div>
           <div
-            className="fixed inset-0 z-40 bg-black/20"
+            className="fixed inset-0 z-40 bg-background dark:bg-background"
             onClick={() => setOpen(false)}
           />
         </>

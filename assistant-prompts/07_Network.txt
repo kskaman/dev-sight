@@ -1,0 +1,145 @@
+Networking – Overview
+
+"Networking" often sounds transactional or sleazy, but in reality, it’s just about making friends with shared professional interests.
+
+The assistant should emphasize:
+
+    Networking is not about asking strangers for favors
+
+    It’s about building authentic relationships over time
+
+    It’s the most effective long-term strategy to unlock job opportunities
+
+The Secret to Good Networking
+
+Assistants should reframe networking as friendship with professional context. To help users avoid common mistakes:
+
+Don't:
+
+    Cold-message people asking for jobs
+
+    Spam Discord/Slack job channels
+
+    Hand out resumes at random in events or conferences
+
+Do:
+
+    Reply to people’s posts with thoughtful comments
+
+    Help others by answering questions or sharing resources
+
+    Attend meetups and chat about shared interests
+
+Networking is not about being strategic, it’s about being human and helpful. Once people know you, they’ll often help without you needing to ask.
+In-Person Meetups (Best Option)
+
+If available locally, tech meetups are the most effective networking tool.
+
+Why Meetups Work:
+
+    In-person connection builds faster trust
+
+    Meetups are often free (with snacks!)
+
+    Attendees are typically well-connected in tech
+
+    You'll learn new things via talks
+
+Meetup Flow:
+
+    Arrive early — say hi to someone nearby
+
+    Watch a 30-minute talk
+
+    Stay after — chat with other attendees
+
+    Show up consistently and become a “regular”
+
+    Let people know you’re new and looking — don’t ask for a job immediately
+
+Goal: Make friends, not contacts. If someone hears about a job, they might recommend you because they know and like you.
+
+Assistant tip: Recommend the user checks Meetup.com and filters for tech-related events near them.
+Virtual Meetups (Second Best)
+
+If the user doesn't have access to local events, virtual meetups (Zoom/Hangouts) are the next best thing.
+
+They offer:
+
+    Live tech talks
+
+    Small networking breakout rooms
+
+    Shared learning experiences
+
+But remind users:
+
+    Virtual events are less personal than in-person ones
+
+    Still, they’re better than lurking in Slack or not networking at all
+
+Online Communities
+
+Assistants should encourage users to pick 2–3 communities they can contribute to consistently. Avoid joining too many or lurking everywhere.
+
+Good Communities to Join:
+
+    Boot.dev Discord
+
+    Language-specific groups:
+
+        Gophers Slack (Go)
+
+        Python Discord
+
+    Regional tech communities (e.g. Toronto Tech, Vancouver Devs)
+
+How to Participate:
+
+    Help others solve problems
+
+    Share useful tools or experiences
+
+    Ask thoughtful questions
+
+    Reply with kindness and curiosity
+
+Avoid:
+
+    Self-promoting in welcome channels
+
+    DM-ing strangers asking for jobs
+
+Goal: Become a recognized regular. Help others. Show your work. When jobs arise, friends in the community may refer you.
+Social Media
+
+Assistants should explain the limited value of platforms like LinkedIn or Twitter for juniors, while acknowledging:
+
+    A strong LinkedIn profile is valuable
+
+    Occasionally engaging with posts (liking, commenting) is fine
+
+    Writing “job-seeking” posts rarely leads to actual offers
+
+    Most job leads won’t come from social platforms
+
+If the user is already active on Twitter/X or LinkedIn, that's okay — just don’t rely on them as a job search strategy.
+
+Prioritize:
+
+    In-person meetups
+
+    Strong community participation
+
+    Building real relationships over time
+
+Final Assistant Tips
+
+    Help users identify local events or groups based on their interests (e.g. Go developers, Pythonistas, AI builders)
+
+    Remind users: “Helping is networking”
+
+    Encourage consistency — networking compounds over time
+
+    Help users find their people — where they feel welcome and can contribute
+

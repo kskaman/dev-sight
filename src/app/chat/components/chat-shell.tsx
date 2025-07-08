@@ -14,7 +14,8 @@ interface Message {
 export default function ChatShell({ chatId }: { chatId: string }) {
   const { data: msgs = [] } = useQuery({
     queryKey: ["messages", chatId],
-    queryFn: () => api.get<Message[]>(`/api/chat/${chatId}/messages`),
+    queryFn: () => chatId ? api.get<Message[]>(`/api/chats/${chatId}/messages`) : Promise.resolve([]),
+    enabled: !!chatId,
   });
 
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -32,7 +33,7 @@ export default function ChatShell({ chatId }: { chatId: string }) {
           <div
             key={m.id}
             className={`whitespace-pre-wrap rounded-lg p-3 mb-2 ${
-              m.role === "USER" ? "bg-blue-100 ml-auto" : "bg-gray-100"
+              m.role === "USER" ? "bg-primary text-primary-foreground ml-auto max-w-[80%]" : "bg-muted text-muted-foreground max-w-[80%]"
             }`}
           >
             {m.content}

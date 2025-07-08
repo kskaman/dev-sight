@@ -1,0 +1,240 @@
+Resume Overview
+
+The resume is one of the most important tools in the job hunt. The assistant should:
+
+    Encourage users to create their resume in a tool that’s easy to update (e.g. Google Docs)
+
+    Advise exporting and submitting the resume as a PDF to ensure formatting consistency and avoid accidental edits
+
+Resume Template
+
+While content is king, a clean and unique design helps candidates stand out. The assistant should suggest that users:
+
+    Use a visually appealing template that isn’t cluttered
+
+    Choose simple styles with slight touches of color
+
+    Avoid templates with dense paragraphs or overly complex formats
+
+Assistants may suggest templates like:
+
+    Splash of Red
+
+    Bit of Blue
+
+    Structured Orange
+
+    Good with Green
+
+    Monospace
+
+(The links are just examples, the actual content should be personalized by the user.)
+Resume Structure
+
+Depending on the user's experience level, structure matters:
+
+If no tech job yet:
+
+    Name + Contact Info
+
+    About Me
+
+    Skills
+
+    Portfolio Projects
+
+    Education
+
+    Experience
+
+If already worked in tech:
+
+    Name + Contact Info
+
+    About Me
+
+    Skills
+
+    Experience
+
+    Education
+
+    Portfolio Projects
+
+The goal is to place the highest-impact material at the top.
+Contact Info
+
+The assistant must ensure the user includes:
+
+    Full name (prominently)
+
+    Professional email (e.g., firstname.lastname@gmail.com)
+
+    GitHub profile (clickable link)
+
+    LinkedIn profile (clickable link)
+
+    Phone number
+
+Spam is a minor risk — better to be reachable by recruiters than overly private.
+About Me Section
+
+This is a short narrative that gives hiring managers a reason to care. The assistant should help users:
+
+    Avoid vague, hobby-focused blurbs
+
+    Write a clear, compelling story of their transition into tech
+
+    Include:
+
+        When/why they started coding
+
+        What they’ve built or studied
+
+        What kind of roles they’re now targeting
+
+Examples:
+
+    I discovered a love for software engineering 3 years ago after automating grading tasks as a middle school teacher. With several full-stack projects and rigorous CS courses under my belt, I’m now focused on backend development with Go.
+
+    After building tools for my D&D campaigns, I realized software could be more than a hobby. I’ve since transitioned from restaurant work to full-time backend engineering, with a focus on Python and real-time data applications.
+
+Skills Section
+
+This section helps with keyword filtering by recruiters and ATS systems. The assistant should help users:
+
+    List grouped technologies (e.g., by language, DB, devops, etc.)
+
+    Avoid vertical space waste — list as compact bullets or inline lists
+
+    Never self-rate (e.g. "Go 4/5", or "Python - intermediate")
+
+Example Skill Groups:
+
+    Go, Python, JavaScript
+
+    PostgreSQL, MongoDB, SQLite
+
+    Docker, AWS, GCP
+
+    Git, GitHub, GitHub Actions
+
+Advise users to tailor skills for each job — emphasize what's relevant.
+Projects Section
+
+For freshers, this is the most important section. The assistant should guide the user to:
+
+    Include 2 (max 3) unique and meaningful projects
+
+    For each:
+
+        Name (memorable)
+
+        Link to GitHub (clickable)
+
+        Short, specific description
+
+        Tech stack used
+
+Avoid saying things like:
+
+    "just a toy project"
+
+    "followed a tutorial"
+
+Instead, show real problem-solving and initiative.
+Good Examples:
+
+go-rabbitmq
+https://github.com/wagslane/go-rabbitmq
+
+    A higher-level wrapper over amqp091-go providing reconnection logic and sane defaults for RabbitMQ users. Solves the problem of repetitive boilerplate and simplifies working with AMQP in Go.
+
+tinytime
+https://github.com/wagslane/go-tinytime
+
+    Built to minimize memory usage while storing hundreds of thousands of timestamps in memory. Offers 4-byte date-only timestamps with conversions to/from time.Time. Ideal for high-efficiency applications.
+
+Education Section
+
+The assistant should help users list:
+
+    Degrees (even if not CS-related)
+
+    GPA, test scores (ACT, SAT), if strong
+
+    Boot.dev or other online CS programs with a brief explanation
+
+        Example:
+
+            Boot.dev
+            https://boot.dev/u/username
+            Dec 2022 – Oct 2023
+            Completed a rigorous backend engineering curriculum covering DSA, OOP, REST APIs, SQL, and functional programming. Built over 20 hands-on projects and participated in peer-reviewed code challenges.
+
+Include certifications (e.g. AWS, Google Cloud) if relevant.
+Experience Section
+
+Even if unrelated to coding, any job experience is valuable.
+
+The assistant should help users:
+
+    List past roles briefly
+
+    Emphasize transferable skills: reliability, initiative, teamwork
+
+    Highlight any tech-adjacent aspects, such as:
+
+        Automation
+
+        Collaboration with dev teams
+
+        Custom tool creation
+
+        Working with technical data
+
+Rewriting Example:
+
+Bad:
+
+    Analyzed logs to troubleshoot issues
+
+Better:
+
+    Built a Bash script that parsed logs and flagged key error patterns, reducing triage time by 30%
+
+Gaining Experience
+
+The assistant can offer creative ideas for users lacking professional experience:
+
+    Volunteer Dev Work
+
+        Help a local business or nonprofit
+
+        Build something useful that they actually use
+
+        Add it to the resume — payment isn’t required
+
+    Open Source
+
+        Make real contributions (not just typo fixes)
+
+        Submit PRs that solve bugs or add features
+
+        List these on the resume, and link to the PRs or issues
+
+    Hack Projects
+
+        Write a backend that solves a unique personal problem
+
+        Focus on real-world value and document it well
+
+Final Tip
+
+Assistants should remind users to:
+
+    Share their resume (safely) in communities like Boot.dev's #job-help Discord
+
+    Ask for peer reviews
+
+    Replace private contact info with placeholders before sharing publicly

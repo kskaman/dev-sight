@@ -2,19 +2,66 @@ import { auth } from "@/app/api/auth/auth";
 import { prisma } from "../../../../../../lib/prisma";
 import { google } from "@ai-sdk/google";
 import { streamText } from "ai";
-import { NextRequest } from "next/server";
-import { Role } from "@prisma/client";
+import { NextRequest, NextResponse } from "next/server";
+
+// Define the Role enum locally to match Prisma schema
+enum Role {
+  USER = "USER",
+  ASSISTANT = "ASSISTANT", 
+  SYSTEM = "SYSTEM"
+}
+
+type Message = {
+  id: string;
+  role: Role;
+  content: string;
+  createdAt: Date;
+}
 
 const toCoreRole = (r: Role): "user" | "assistant" | "system" =>
   r === Role.USER ? "user" : r === Role.ASSISTANT ? "assistant" : "system";
 
-export async function POST(req: NextRequest, { params }: { params: { chatId: string } }) {
+export async function GET(_: NextRequest, { params }: { params: Promise<{ chatId: string }> }) {
   const session = await auth();
   if (!session?.user?.id) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const { chatId } = params;
+  const { chatId } = await params;
+
+  // Verify user owns this chat
+  const chat = await prisma.chat.findFirst({
+    where: {
+      id: chatId,
+      userId: session.user.id,
+    },
+  });
+
+  if (!chat) {
+    return new Response("Chat not found", { status: 404 });
+  }
+
+  const messages = await prisma.message.findMany({
+    where: { chatId },
+    orderBy: { createdAt: "asc" },
+    select: { 
+      id: true,
+      role: true, 
+      content: true,
+      createdAt: true 
+    },
+  });
+
+  return NextResponse.json(messages);
+}
+
+export async function POST(req: NextRequest, { params }: { params: Promise<{ chatId: string }> }) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const { chatId } = await params;
   const { content } = await req.json() as { content: string } ;
 
   if (!content || typeof content !== "string") {
@@ -39,17 +86,16 @@ export async function POST(req: NextRequest, { params }: { params: { chatId: str
 
   // Fetch previous messages (context)
   const messages = await prisma.message.findMany({
-  where: { chatId: chat.id },
-  orderBy: { createdAt: "asc" },
-  select: { role: true, content: true },
-  take: 30,
-});
+    where: { chatId: chat.id },
+    orderBy: { createdAt: "asc" },
+    select: { role: true, content: true },
+    take: 30,
+  });
 
-
-  const history = messages.map((m) => ({
-  role: toCoreRole(m.role),
-  content: m.content,
-}));
+  const history = messages.map((m: { role: Role; content: string }) => ({
+    role: toCoreRole(m.role),
+    content: m.content,
+  }));
 
 
   let assistantBuf = "";
