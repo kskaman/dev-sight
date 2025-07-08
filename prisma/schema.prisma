@@ -86,6 +86,8 @@ model Message {
 
   isDeleted Boolean   @default(false)
   createdAt DateTime  @default(now())
+
+  @@index([chatId, createdAt])
   @@map("messages")
 }
 
