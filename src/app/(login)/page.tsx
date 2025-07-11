@@ -4,7 +4,7 @@ import { GitHubIcon } from "@/components/icons";
 
 import { useTransition } from "react";
 import { DotLoader } from "@/components/ui/dot-loader";
-import { login } from "../(auth)/actions";
+import { login } from "../api/auth/actions";
 import { Button } from "@/components/ui/button";
 
 export default function Page() {

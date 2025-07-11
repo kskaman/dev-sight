@@ -1,8 +1,10 @@
 "use client";
 
+import { QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 // import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
+import { queryClient } from "../../lib/query-client";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -17,7 +19,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         {children}
       </ThemeProvider> */}
       <Toaster position="top-center" />
-      {children}
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </SessionProvider>
   );
 }

@@ -3,12 +3,13 @@
 import { api } from "@/app/api/api";
 import { logout } from "@/app/api/auth/actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { OutlineButton } from "@/components/ui/outline-button-wrapper";
 import { Chat } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, LogOut, Plus, Search } from "lucide-react";
 import { User } from "next-auth";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface Props {
   user: User;
@@ -64,14 +65,21 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
 
       {/* Conversation list */}
       {!isMinimized && (
-        <div className="flex-1 overflow-y-auto mt-4 space-y-1 pr-2">
+        <div
+          className="flex-1 overflow-y-auto my-4 space-y-1 p-2
+        border border-gray-200 rounded-lg"
+        >
           {chats.map((chat) => (
-            <OutlineButton
+            <div
+              className="bg-white text-grey-900 w-full cursor-pointer
+              hover:bg-gray-50 flex justify-start items-center border 
+              border-gray-150 rounded-lg px-2 py-1.5"
               key={chat.id}
               onClick={() => router.push(`/chat/${chat.id}`)}
             >
               {chat.title}
-            </OutlineButton>
+              {/* Add Edit button here */}
+            </div>
           ))}
         </div>
       )}
@@ -80,7 +88,7 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
       <div className="mt-auto flex flex-col items-center justify-between gap-3">
         <OutlineButton onClick={logout}>
           <LogOut className="h-4 w-4 rotate-180" />
-          {!isMinimized && "Log Out"}
+          {!isMinimized && "Sign Out"}
         </OutlineButton>
 
         <OutlineButton>

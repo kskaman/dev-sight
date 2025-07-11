@@ -42,7 +42,7 @@ export default function ChatShell({ chatId }: { chatId: string }) {
       </div>
 
       <div className="mt-auto w-full md:w-[95%]">
-        <ChatInput />
+        <ChatInput chatId={chatId} />
       </div>
     </div>
   );
