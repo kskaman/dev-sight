@@ -1,91 +1,56 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowUp } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useSendMessage } from "@/app/queries/messages";
+import {
+  AIInput,
+  AIInputTextarea,
+  AIInputToolbar,
+  AIInputButton,
+  AIInputTools,
+  AIInputSubmit,
+} from "@/components/ui/shadcn-io/input-ai";
+import { PaperclipIcon, SendIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { FormEventHandler } from "react";
 
-export default function ChatInput({ chatId }: { chatId: string }) {
-  const [input, setInput] = useState<string>("");
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const qc = useQueryClient();
+export default function ChatInput({ chatId }: { chatId?: string }) {
+  const router = useRouter();
+  const send = useSendMessage(chatId);
 
-  useEffect(() => {
-    if (textAreaRef.current) {
-      textAreaRef.current.focus();
-    }
-  }, []);
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const message = formData.get("message");
 
-  const { mutate: send, isPending } = useMutation({
-    mutationFn: async (content: string) => {
-      const resp = await fetch(`/api/chat/${chatId}/messages`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content }),
-        credentials: "include",
-      });
-      const reader = resp.body!.getReader();
-      let assistant = "";
-      const decoder = new TextDecoder();
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        assistant += decoder.decode(value);
-      }
-      return assistant;
-    },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["messages", chatId] });
-      setInput("");
-      if (textAreaRef.current) {
-        textAreaRef.current.value = "";
-        textAreaRef.current.style.height = "auto";
-      }
-    },
-  });
+    if (!message || typeof message !== "string" || !message.trim()) return;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-    send(input.trim());
-  };
+    // Handle form submission
+    send.mutate(message.trim(), {
+      onSuccess: (id) => {
+        // navigate only when needed
+        if (!chatId) router.replace(`/chat/${id}`);
+      },
+    });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInput(e.target.value);
-
-    if (textAreaRef.current) {
-      textAreaRef.current.style.height = "auto";
-      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
-    }
+    // Reset the form
+    event.currentTarget.reset();
   };
 
   return (
-    <form className="w-full" onSubmit={handleSubmit}>
-      <div
-        className="w-full bg-white rounded-[24px] border border-gray-300 
-          gap-0"
-      >
-        <textarea
-          ref={textAreaRef}
-          value={input}
-          onChange={handleInputChange}
-          rows={1}
-          placeholder="Ask ..."
-          className="block w-full px-3 pt-3  rounded-[24px] 
-          focus:outline-none text-[14px]
-          max-h-[160px] overflow-y-auto resize-none"
-        />
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            disabled={!input.trim() || isPending}
-            className="m-[6px] rounded-full w-8 h-8 bg-neutral-900 
-                      text-white flex items-center justify-center
-          disabled:opacity-50 cursor-pointer"
-          >
-            <ArrowUp size={"18px"} className="text-normal" />
-          </button>
-        </div>
-      </div>
-    </form>
+    <div className="w-full">
+      <AIInput onSubmit={handleSubmit}>
+        <AIInputTextarea placeholder="Ask anything..." />
+        <AIInputToolbar>
+          <AIInputTools>
+            <AIInputButton>
+              <PaperclipIcon size={16} />
+            </AIInputButton>
+          </AIInputTools>
+          <AIInputSubmit>
+            <SendIcon size={16} />
+          </AIInputSubmit>
+        </AIInputToolbar>
+      </AIInput>
+    </div>
   );
 }

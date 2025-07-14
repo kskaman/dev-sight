@@ -1,0 +1,293 @@
+Interviews – Overview
+
+If you send out 100 job applications, you might get:
+
+* 15 phone screens
+* 10 interviews
+* 1 job offer
+
+This is normal. That means:
+
+1. You need to apply to **a lot of jobs**
+2. You need to **practice interviewing a lot**
+
+Interviewing is a **learnable skill**. The more you practice, the better you’ll get.
+
+✅ **Optional**: Listen to [this episode](https://creators.spotify.com/pod/profile/backend-banter-fm/episodes/013---Landing-your-First-Coding-Job-with-James-Q-Quick-e2h4iva) of *Backend Banter* for great advice on landing your first dev job.
+
+---
+
+### Relax
+
+Easier said than done, but a calm mindset improves performance.
+
+#### 1. You’re Probably Not Getting This Job (and that’s okay)
+
+You’ll interview more places than you’ll work at. It’s normal. Go in focused on:
+
+* Connecting with people
+* Learning about the process
+* Practicing interview skills
+
+#### 2. No Interview is a Waste
+
+Every interview teaches you something:
+
+* How tech interviews work
+* Real-world questions and workflows
+* What tech stacks companies are using
+* Where your own gaps are
+* How to communicate better
+
+#### 3. You’ll Get More Chances
+
+It’s not your one shot. More interviews = less pressure = better performance.
+
+---
+
+### Confidence
+
+Most new developers lack confidence. You can build it with preparation and self-awareness.
+
+#### Know How Far You've Come
+
+If you’ve completed serious backend or CS courses (like Boot.dev), you’ve learned:
+
+* More practical skills than many CS grads
+* More theory than most bootcamp grads
+
+That’s a big deal.
+
+#### People Hire People
+
+Companies don’t hire — **individuals** do. Hiring managers want someone who:
+
+* Solves problems
+* Is pleasant to work with
+* Makes their life easier
+* Makes the team look good
+* Can learn quickly
+
+Keep this in mind: You’re not asking for charity. You’re offering value.
+
+🛑 Don’t downplay yourself with:
+
+> “I’m not great at algorithms. I never went to college.”
+
+> “I’ve applied to 100 jobs and never got an offer.”
+
+🎯 Instead, focus on how you can **contribute**.
+
+---
+
+### Humility
+
+You should be confident — but not cocky.
+
+You **don’t know everything**, and that’s okay. Even seniors don’t.
+
+Being **humble** means:
+
+* You’ll learn faster
+* You’ll work well with others
+* You’re open to feedback
+
+People want teammates who are teachable and collaborative.
+
+---
+
+### Interview Structure
+
+Most interviews follow a common structure:
+
+1. **Phone screen**
+2. **Homework assignment** (sometimes)
+3. **Cultural interview**
+4. **Technical interview**
+5. **Offer**
+
+Larger companies = more steps
+Smaller companies = fewer steps
+
+---
+
+### 1. Phone Screen
+
+Usually a quick chat to:
+
+* Confirm your background
+* Introduce the company
+* See if you're worth moving forward
+
+Usually done by HR or a recruiter.
+
+🧠 **Tips**:
+
+* Be polite
+* Ask about the company and next steps
+* Use this as low-stakes practice
+
+---
+
+### 2. Homework Assignment
+
+Common for junior roles. Usually a 1–2 hour coding challenge.
+
+Do your best:
+
+1. **Finish the task**
+2. Make it **work well**
+3. Write **clean, readable code**
+
+If you’re juggling multiple take-homes, prioritize doing a few well rather than many poorly.
+
+📌 Turn it in **quickly** to show enthusiasm.
+
+---
+
+### 3. Cultural Interview
+
+Sometimes combined with technical interviews. Focus is on **soft skills**:
+
+* Are you a good communicator?
+* Are you easy to work with?
+* Are you enthusiastic, respectful, and honest?
+
+💡 Make small talk. Be curious about the interviewer. Show who you are.
+
+---
+
+### 4. Technical Interview
+
+Common types include:
+
+* Algorithm questions (e.g. reverse a string)
+* Live coding
+* Architecture/design questions
+* Walkthroughs of past projects
+
+Big companies = more algorithm-focused
+Small companies = more real-world discussions
+
+We’ll cover algorithm practice later.
+
+---
+
+### 5. The Offer
+
+🎉 If you get an offer:
+
+* Take 1–2 days to think
+* You don’t have to say yes immediately
+* Your first job doesn't need to be perfect
+
+It’s fine to take a “base hit” job and aim for a better one in a year or two.
+
+---
+
+### Be on the Team
+
+🧠 **Reframe** interviews from “exams” to “collaborations”.
+
+Bad approach:
+
+> "Here’s the code you asked for."
+
+Better approach:
+
+> "Should I reverse the string in-place or use a new one?"
+> "So we’re not concerned with memory? Great."
+> "Here's how I'm thinking of solving it..."
+
+**Benefits**:
+
+* You show your process
+* You ask smart questions
+* You act like a teammate
+* You reduce mistakes
+* The interviewer helps you succeed
+
+---
+
+### Ask Questions
+
+Asking questions makes you look smart — not dumb.
+
+If you don’t know the answer, turn it into a learning conversation:
+
+❌ Bad:
+
+> "I don’t know."
+
+✅ Good:
+
+> "I learned closures in a course, but don’t fully remember. I think it’s about functions holding state? I used them in my blog project..."
+
+This shows:
+
+* You’ve studied
+* You’ve applied it before
+* You’re engaging in the topic
+
+---
+
+### Clarify Everything
+
+Clarifying questions are **good** — even for seniors.
+
+They show:
+
+* You understand nuance
+* You avoid assumptions
+* You care about building the right solution
+
+Example:
+
+> Interviewer: "Design an API for users and their photos."
+> You: "Can users share photos, or are they private?"
+> Interviewer: "They can share them, but each has one owner."
+> You: "Great, then I’d structure the endpoints like..."
+
+---
+
+### Prepare
+
+Before each interview, spend **1 hour** on prep:
+
+1. Research the company: what do they do?
+2. Research the tech: what languages and tools do they use?
+3. Learn what each tech does (you don’t have to be an expert)
+
+Bonus: build a quick CLI using a new tech if you have time
+
+---
+
+### Practice
+
+If you’re getting stuck in interviews — especially with coding — practice is key.
+
+🧠 Use:
+
+* [LeetCode](https://leetcode.com) for algorithm problems
+* Review DSA and whiteboarding questions
+* Work through your Boot.dev course again
+* Focus on **your weak spots**
+
+After each interview:
+
+1. Jot down questions you missed
+2. Practice answering them better
+3. Don’t repeat the same mistake
+
+---
+
+### Final Encouragement
+
+You **won’t know your weaknesses** until you start interviewing.
+
+So get out there. Start practicing. Build confidence with every interview.
+
+Each one brings you closer to your first dev job. You got this.
+
+---
+

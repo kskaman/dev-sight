@@ -1,0 +1,136 @@
+Applying for Jobs – Overview
+
+It’s time to start the application process. Cold applying is a perfectly valid and effective strategy, especially for your first dev job. Many people land their first role this way.
+Set a Weekly Application Goal
+
+The assistant should help the user:
+
+    Set a realistic and consistent weekly goal — e.g. 25 applications per week
+
+    Aim for 3–4 per day with 30 minutes of focused effort
+
+    Stay consistent to build momentum and get responses
+
+The user should avoid waiting. Even if there are no immediate results, consistent effort pays off.
+Where to Apply
+
+Assistants should help users broaden their approach beyond LinkedIn or Indeed.
+1. Standard Job Boards
+
+These include:
+
+    LinkedIn
+
+    Indeed
+
+    Glassdoor
+
+    Wellfound (formerly AngelList)
+
+While competitive, these are valid starting points. Encourage the user to personalize each application.
+2. Local Jobs
+
+Many developers forget about onsite-only roles. These can be easier to land and come with big benefits:
+
+    Smaller candidate pools
+
+    In-person mentorship and faster learning
+
+    Direct cultural fit (via office visit or meetup)
+
+    Better networking opportunity
+
+Users should look for jobs in their own city or region, especially smaller companies.
+3. Company Career Pages
+
+Assistants should prompt users to:
+
+    List 10–15 companies they’d love to work for
+
+    Visit their websites directly and look for /careers pages
+
+    Apply even if the job isn’t listed on major platforms
+
+This avoids the flood of applicants on public job boards.
+4. Niche Tech Job Boards
+
+These can have fewer applicants and more targeted roles:
+
+    RemoteOK
+
+    Golang Cafe
+
+    We Work Remotely
+
+    Work at a Startup
+
+    Hacker News “Who’s Hiring” (monthly thread)
+
+    Key Values
+
+    Local Slack/Discord job channels (don't spam)
+
+Assistants can help users bookmark and check these regularly.
+5. Non-Tech Companies
+
+Many first dev jobs are at non-tech companies with small dev teams. These may include:
+
+    Marketing agencies
+
+    Small logistics or manufacturing businesses
+
+    Accounting firms or law offices with custom tools
+
+These companies:
+
+    May not pay as much
+
+    Might have legacy codebases
+
+    But they offer real-world experience and a stepping stone to future roles
+
+Find the Side Doors
+
+Not all jobs are found through the front door (application forms). Assistants should encourage users to leverage connections, communities, and initiative to find "side doors."
+Examples:
+
+    A friend works at a company and drops your name to the hiring manager
+
+    A dev mentions a hiring post in Slack — offer to chat over coffee
+
+    You already work at a company in customer support — ask to talk to a dev
+
+    Physically visit a local company and hand in your resume in person
+
+Encourage users to be polite, proactive, and curious, not pushy.
+Recruiters: Caution for Juniors
+
+Recruiters can be helpful for mid-to-senior roles. For early-career developers:
+
+    Recruiters are unlikely to prioritize junior candidates (low commissions)
+
+    Often send mass LinkedIn messages to anyone with “Python” or “JavaScript” in their profile
+
+    May ask for long forms, homework, or calls — and then ghost
+
+Advice for assistants:
+
+    Let users know it’s okay to engage with recruiters for learning
+
+    But not to rely on them to find their first job
+
+    Keep expectations low and prioritize cold applying or direct networking
+
+Summary Tips for the Assistant to Encourage
+
+    Start applying now. Don’t wait for everything to be “perfect.”
+
+    Track applications in a spreadsheet (date, company, role, status)
+
+    Focus on quality but don’t aim for perfection — volume matters too
+
+    Diversify where and how you apply: job boards, niche sites, local employers, side doors
+
+    Customize resumes and cover letters when you can
+
+    Follow up where appropriate

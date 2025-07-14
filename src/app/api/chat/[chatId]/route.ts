@@ -2,13 +2,19 @@ import { auth } from "../../auth/auth";
 import { prisma } from "../../../../../lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(_: NextRequest, { params }: { params: { chatId: string } }) {
+export async function GET(
+  _: NextRequest,
+  { params }: { params: Promise<{ chatId: string }> }
+) {
   const session = await auth();
-  if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
+  if (!session?.user?.id)
+    return new NextResponse("Unauthorized", { status: 401 });
+
+  const { chatId } = await params;
 
   const chat = await prisma.chat.findFirst({
     where: {
-      id: params.chatId,
+      id: chatId,
       userId: session.user.id,
     },
     include: {
@@ -21,35 +27,44 @@ export async function GET(_: NextRequest, { params }: { params: { chatId: string
   return NextResponse.json(chat);
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { chatId: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ chatId: string }> }
+) {
   const session = await auth();
-  if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
+  if (!session?.user?.id)
+    return new NextResponse("Unauthorized", { status: 401 });
 
   const { title } = await req.json();
+  const { chatId } = await params;
 
-  const updated = await prisma.chat.updateMany({
+  const updated = await prisma.chat.update({
     where: {
-      id: params.chatId,
+      id: chatId,
       userId: session.user.id,
     },
     data: { title },
   });
 
-  return NextResponse.json({ updated: updated.count > 0 });
+  return NextResponse.json(updated);
 }
 
-export async function DELETE(_: NextRequest, { params }: { params: { chatId: string } }) {
+export async function DELETE(
+  _: NextRequest,
+  { params }: { params: Promise<{ chatId: string }> }
+) {
   const session = await auth();
-  if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
+  if (!session?.user?.id)
+    return new NextResponse("Unauthorized", { status: 401 });
 
-  await prisma.message.deleteMany({ where: { chatId: params.chatId } });
+  const { chatId } = await params;
 
-  const deleted = await prisma.chat.deleteMany({
+  await prisma.chat.deleteMany({
     where: {
-      id: params.chatId,
+      id: chatId,
       userId: session.user.id,
     },
   });
 
-  return NextResponse.json({ deleted: deleted.count > 0 });
+  return new NextResponse(null, { status: 204 });
 }

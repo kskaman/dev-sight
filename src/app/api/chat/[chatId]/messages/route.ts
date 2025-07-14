@@ -8,9 +8,46 @@ import { Role } from "@prisma/client";
 const toCoreRole = (r: Role): "user" | "assistant" | "system" =>
   r === Role.USER ? "user" : r === Role.ASSISTANT ? "assistant" : "system";
 
+export async function GET(
+  _: NextRequest,
+  { params }: { params: Promise<{ chatId: string }> }
+) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const { chatId } = await params;
+
+  // Verify user owns this chat
+  const chat = await prisma.chat.findFirst({
+    where: {
+      id: chatId,
+      userId: session.user.id,
+    },
+  });
+
+  if (!chat) {
+    return new Response("Chat not found", { status: 404 });
+  }
+
+  const messages = await prisma.message.findMany({
+    where: { chatId },
+    orderBy: { createdAt: "asc" },
+    select: {
+      id: true,
+      role: true,
+      content: true,
+      createdAt: true,
+    },
+  });
+
+  return NextResponse.json(messages);
+}
+
 export async function POST(
   req: NextRequest,
-  { params }: { params: { chatId: string } }
+  { params }: { params: Promise<{ chatId: string }> }
 ) {
   const session = await auth();
   if (!session?.user?.id) {
@@ -77,23 +114,4 @@ export async function POST(
   });
 
   return result.toDataStreamResponse();
-}
-
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: { chatId: string } }
-) {
-  const session = await auth();
-  if (!session?.user?.id)
-    return new NextResponse("Unauthorized", { status: 401 });
-
-  const chatId = await params.chatId;
-
-  const msgs = await prisma.message.findMany({
-    where: { chatId, chat: { userId: session.user.id }, isDeleted: false },
-    orderBy: { createdAt: "asc" },
-    select: { id: true, role: true, content: true },
-  });
-
-  return NextResponse.json(msgs);
 }

@@ -18,10 +18,10 @@ export default function Page() {
     <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="flex w-full flex-col gap-12">
         <div className="mx-auto flex max-w-[75%] flex-col items-center gap-2 text-center">
-          <h3 className="text-xl font-semibold dark:text-zinc-50">
+          <h3 className="text-xl font-semibold text-foreground">
             Build a Portfolio that Recruiters love
           </h3>
-          <p className="text-sm text-gray-500 dark:text-zinc-400">
+          <p className="text-sm text-muted-foreground">
             Analyze your profile and get personalized recommendations to improve
             your chances of getting hired.
           </p>
@@ -34,8 +34,8 @@ export default function Page() {
             gap-2 px-4 py-2
             border rounded-md 
             max-w-[60%] md:max-w-[400px] mx-auto
-            text-gray-800
-            bg-white hover:bg-gray-100 active:bg-white"
+            text-foreground
+            bg-card hover:bg-accent active:bg-card border-border"
         >
           {pending ? (
             <DotLoader />

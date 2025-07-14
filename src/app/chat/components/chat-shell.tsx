@@ -1,21 +1,11 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import ChatInput from "./chat-input";
-import { api } from "@/app/api/api";
 import { useEffect, useRef } from "react";
+import { useMessages } from "@/app/queries/messages";
 
-interface Message {
-  id: string;
-  role: "USER" | "ASSISTANT" | "SYSTEM";
-  content: string;
-}
-
-export default function ChatShell({ chatId }: { chatId: string }) {
-  const { data: msgs = [] } = useQuery({
-    queryKey: ["messages", chatId],
-    queryFn: () => api.get<Message[]>(`/api/chat/${chatId}/messages`),
-  });
+export default function ChatShell({ chatId }: { chatId?: string }) {
+  const { data: msgs = [] } = useMessages(chatId);
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -32,7 +22,9 @@ export default function ChatShell({ chatId }: { chatId: string }) {
           <div
             key={m.id}
             className={`whitespace-pre-wrap rounded-lg p-3 mb-2 ${
-              m.role === "USER" ? "bg-blue-100 ml-auto" : "bg-gray-100"
+              m.role === "USER"
+                ? "bg-primary text-primary-foreground ml-auto max-w-[80%]"
+                : "bg-muted text-muted-foreground max-w-[80%]"
             }`}
           >
             {m.content}

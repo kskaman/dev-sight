@@ -1,8 +1,7 @@
-"use ";
-
 import { ReactNode } from "react";
 import { auth } from "../api/auth/auth";
 import ClientShell from "./components/client-shell";
+import { redirect } from "next/navigation";
 
 export default async function ChatLayout({
   children,
@@ -11,5 +10,9 @@ export default async function ChatLayout({
 }) {
   const session = await auth();
 
-  return <ClientShell user={session!.user!}>{children}</ClientShell>;
+  if (!session?.user) {
+    redirect("/");
+  }
+
+  return <ClientShell user={session.user}>{children}</ClientShell>;
 }
