@@ -14,6 +14,7 @@ import {
 import { User } from "next-auth";
 import ChatItem from "./sidebar-chat-item";
 import { useChats, useCreateChat } from "@/app/queries/chat";
+import { useRouter } from "next/navigation";
 
 interface Props {
   user: User;
@@ -26,8 +27,8 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
 
   const { data: chats = [] } = useChats();
 
-  const { mutate: createChat } = useCreateChat();
-
+  const createChat = useCreateChat();
+  const router = useRouter();
   return (
     <aside
       className={`flex h-full
@@ -57,11 +58,15 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
       {!isMinimized && (
         <div className="flex flex-col items-center gap-3">
           <Button
-            onClick={() => createChat()}
+            onClick={() => {
+              createChat.mutate(undefined, {
+                onSuccess: (chat) => router.replace(`/chat/${chat.id}`),
+              });
+            }}
             variant="outline"
             className={`w-full rounded-full px-4 py-2 text-sm 
               font-normal cursor-pointer flex items-center  ${
-                isMinimized ? "w-10 h-10 p-0 justify-center" : ""
+                isMinimized ? "w-10 h-10 p-0 justify-center" : "justify-start"
               }`}
           >
             <SquarePen className="h-4 w-4" />
@@ -72,7 +77,7 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
             variant="outline"
             className={`w-full rounded-full px-4 py-2 text-sm 
               font-normal cursor-pointer flex items-center ${
-                isMinimized ? "w-10 h-10 p-0 justify-center" : ""
+                isMinimized ? "w-10 h-10 p-0 justify-center" : "justify-start"
               }`}
           >
             <Search className="h-4 w-4" />
@@ -89,11 +94,17 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
           className="flex-1 my-4 p-2 h-5 border 
         border-gray-300 rounded-[20px]"
         >
-          <div className="space-y-1">
-            {chats.map((chat) => (
-              <ChatItem key={chat.id} chat={chat} />
-            ))}
-          </div>
+          {chats.length === 0 ? (
+            <div className="h-full flex items-center justify-center text-sm text-muted-foreground">
+              No chats yet
+            </div>
+          ) : (
+            <div className="space-y-1">
+              {chats.map((chat) => (
+                <ChatItem key={chat.id} chat={chat} />
+              ))}
+            </div>
+          )}
         </ScrollArea>
       )}
 
@@ -103,8 +114,8 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
           onClick={logout}
           variant="outline"
           className={`w-full rounded-full px-4 py-2 text-sm 
-            font-normal cursor-pointer flex items-center justify-center ${
-              isMinimized ? "w-10 h-10 p-0" : ""
+            font-normal cursor-pointer flex items-center ${
+              isMinimized ? "w-10 h-10 p-0 justify-center" : "justify-start"
             }`}
         >
           <LogOut className="h-4 w-4 rotate-180" />
@@ -114,8 +125,8 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
         <Button
           variant="outline"
           className={`w-full rounded-full px-4 py-2 text-sm 
-            font-normal cursor-pointer flex items-center justify-center ${
-              isMinimized ? "w-10 h-10 p-0" : ""
+            font-normal cursor-pointer flex items-center ${
+              isMinimized ? "w-10 h-10 p-0 justify-center" : "justify-start"
             }`}
         >
           <Avatar className="h-4 w-4">

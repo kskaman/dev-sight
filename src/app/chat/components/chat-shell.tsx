@@ -3,11 +3,14 @@
 import ChatInput from "./chat-input";
 import { useEffect, useRef } from "react";
 import { useMessages } from "@/app/queries/messages";
+import { useMessageStore } from "../../../../lib/store/message-store";
 
 export default function ChatShell({ chatId }: { chatId?: string }) {
   const { data: msgs = [] } = useMessages(chatId);
 
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  const tempAssistantMessage = useMessageStore((s) => s.tempAssistantMessage);
 
   useEffect(() => {
     if (bottomRef.current) {
@@ -30,6 +33,13 @@ export default function ChatShell({ chatId }: { chatId?: string }) {
             {m.content}
           </div>
         ))}
+
+        {/* live assistant stream */}
+        {tempAssistantMessage && (
+          <div className="whitespace-pre-wrap rounded-lg p-3 mb-2 bg-muted text-muted-foreground max-w-[80%]">
+            {tempAssistantMessage}
+          </div>
+        )}
         <div ref={bottomRef} />
       </div>
 
