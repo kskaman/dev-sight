@@ -22,7 +22,10 @@ export default function ConfirmDeleteModal({
 }: ConfirmDeleteModalProps) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent
+        className="rounded-xl [&>button[data-dialog-close]]:cursor-pointer
+      "
+      >
         <DialogHeader>
           <DialogTitle>Delete this chat?</DialogTitle>
         </DialogHeader>
@@ -31,10 +34,14 @@ export default function ConfirmDeleteModal({
           chat?
         </p>
         <DialogFooter className="mt-4">
-          <Button variant="ghost" onClick={onClose}>
+          <Button variant="ghost" onClick={onClose} className="cursor-pointer">
             Cancel
           </Button>
-          <Button variant="destructive" onClick={onConfirm}>
+          <Button
+            variant="destructive"
+            onClick={onConfirm}
+            className="rounded-xl cursor-pointer"
+          >
             Delete
           </Button>
         </DialogFooter>

@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ConfirmDeleteModal from "./confirm-delete-modal";
@@ -50,7 +50,7 @@ export default function ChatItem({ chat }: { chat: Chat }) {
     <>
       <div
         className="group flex items-center justify-between 
-      px-2 rounded-[24px] cursor-pointer"
+      px-2 cursor-pointer "
         onClick={() => router.push(`/chat/${chat.id}`)}
         onDoubleClick={() => setEditing(true)}
       >
@@ -66,21 +66,27 @@ export default function ChatItem({ chat }: { chat: Chat }) {
             <Button
               variant="ghost"
               size="icon"
-              className="opacity-0 group-hover:opacity-100 cursor-pointer"
+              className="rounded-xl cursor-pointer h-6 w-6 focus-visible:ring-0"
             >
-              <MoreVertical className="h-4 w-4" />
+              <MoreHorizontal className="h-4 w-4 rounded-xl" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="right" className="py-1">
+          <DropdownMenuContent
+            side="bottom"
+            sideOffset={4}
+            align="start"
+            className="py-1 rounded-xl"
+          >
             <DropdownMenuItem
               onSelect={() => {
                 setEditing(true);
               }}
+              className="cursor-pointer rounded-xl"
             >
               Edit title
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="text-destructive"
+              className="text-destructive cursor-pointer rounded-xl"
               onSelect={() => setShowDeleteModal(true)}
             >
               Delete chat

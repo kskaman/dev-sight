@@ -109,7 +109,7 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
       {/* Conversation list */}
       {!isMinimized && (
         <ScrollArea
-          className="flex-1 my-4 p-2 h-5 border 
+          className="flex-1 my-4 px-2 py-3 h-5 border 
         border-gray-300 rounded-[20px]"
         >
           {filteredChats.length === 0 ? (
