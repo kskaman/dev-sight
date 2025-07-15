@@ -113,7 +113,7 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
         border-gray-300 rounded-[20px]"
         >
           {filteredChats.length === 0 ? (
-            <div className="h-full flex items-center justify-start text-sm text-muted-foreground">
+            <div className="h-full mx-4 flex items-center justify-start text-sm text-muted-foreground">
               No chats to show
             </div>
           ) : (

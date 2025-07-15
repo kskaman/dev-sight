@@ -34,7 +34,11 @@ export default function ConfirmDeleteModal({
           chat?
         </p>
         <DialogFooter className="mt-4">
-          <Button variant="ghost" onClick={onClose} className="cursor-pointer">
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            className="rounded-xl cursor-pointer"
+          >
             Cancel
           </Button>
           <Button
