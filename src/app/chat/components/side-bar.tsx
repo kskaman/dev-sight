@@ -15,6 +15,7 @@ import { User } from "next-auth";
 import ChatItem from "./sidebar-chat-item";
 import { useChats, useCreateChat } from "@/app/queries/chat";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface Props {
   user: User;
@@ -23,12 +24,19 @@ interface Props {
 }
 
 export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
+  const [search, setSearch] = useState<string>("");
+
   const firstName = user?.name?.split(" ")?.[0] ?? "User";
 
   const { data: chats = [] } = useChats();
 
   const createChat = useCreateChat();
   const router = useRouter();
+
+  const filteredChats = chats.filter((chat) =>
+    chat.title.trim().toLowerCase().includes(search.trim().toLowerCase())
+  );
+
   return (
     <aside
       className={`flex h-full
@@ -72,17 +80,27 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
             <SquarePen className="h-4 w-4" />
             <span>New chat</span>
           </Button>
-          {/* Search function yet to implement*/}
-          <Button
-            variant="outline"
-            className={`w-full rounded-full px-4 py-2 text-sm 
-              font-normal cursor-pointer flex items-center ${
-                isMinimized ? "w-10 h-10 p-0 justify-center" : "justify-start"
-              }`}
-          >
-            <Search className="h-4 w-4" />
-            <span>Search Chat</span>
-          </Button>
+          {/* Search chat function*/}
+          <div className="w-full">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search chats..."
+                className="pl-10 pr-4 py-2 w-full rounded-full border text-sm bg-background border-border focus:outline-none"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch("")}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground text-xs cursor-pointer"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
@@ -94,13 +112,13 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
           className="flex-1 my-4 p-2 h-5 border 
         border-gray-300 rounded-[20px]"
         >
-          {chats.length === 0 ? (
-            <div className="h-full flex items-center justify-center text-sm text-muted-foreground">
-              No chats yet
+          {filteredChats.length === 0 ? (
+            <div className="h-full flex items-center justify-start text-sm text-muted-foreground">
+              No chats to show
             </div>
           ) : (
             <div className="space-y-1">
-              {chats.map((chat) => (
+              {filteredChats.map((chat) => (
                 <ChatItem key={chat.id} chat={chat} />
               ))}
             </div>
