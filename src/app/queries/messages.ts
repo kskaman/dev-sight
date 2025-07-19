@@ -4,7 +4,6 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { useMessageStore } from "../../../lib/store/message-store";
 import { useRouter } from "next/navigation";
 
 export type Message = {
@@ -14,7 +13,7 @@ export type Message = {
 };
 
 export const useMessages = (chatId?: string) =>
-  useSuspenseQuery({
+  useSuspenseQuery<Message[]>({
     queryKey: ["messages", chatId ?? "none"],
     queryFn: () =>
       chatId
@@ -22,12 +21,49 @@ export const useMessages = (chatId?: string) =>
         : Promise.resolve([]),
   });
 
+let currentAbort: AbortController | null = null;
+
 export const useSendMessage = (chatId?: string) => {
   const qc = useQueryClient();
   const router = useRouter();
+
   return useMutation({
+    retry: false,
+    /* optimistic */
+    onMutate: async (content: string) => {
+      await qc.cancelQueries({ queryKey: ["messages", chatId ?? "none"] });
+
+      const tempMsg = {
+        id: "tmp-" + Date.now(),
+        role: "USER" as const,
+        content,
+      };
+      const placeholder = {
+        id: "tmp-ai",
+        role: "ASSISTANT" as const,
+        content: 'Generating<span class="dots">…</span>',
+      };
+
+      const prev =
+        qc.getQueryData<Message[]>(["messages", chatId ?? "none"]) ?? [];
+
+      /* write the optimistic list into the cache */
+      qc.setQueryData(
+        ["messages", chatId ?? "none"],
+        [...prev, tempMsg, placeholder]
+      );
+
+      /* return context for rollback */
+      return { prev };
+    },
     /** Create chat lazily → send message → return the (real) chatId */
     mutationFn: async (content: string) => {
+      // cancel any earlier run
+      currentAbort?.abort();
+      const ctrl = new AbortController();
+      // remember it
+      currentAbort = ctrl;
+
       // lazy-create chat if none yet
       let id = chatId;
       if (!id) {
@@ -43,26 +79,19 @@ export const useSendMessage = (chatId?: string) => {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ content }),
+        signal: ctrl.signal,
       });
 
-      const reader = resp.body!.getReader();
-      const decoder = new TextDecoder();
+      if (!resp.ok) throw new Error(resp.statusText);
 
-      const setTemp = useMessageStore.getState().setTempMessage;
-      const resetTemp = useMessageStore.getState().resetTemp;
+      const { text } = (await resp.json()) as { text: string };
 
-      let fullContent = "";
+      /* replace placeholder immediately */
+      qc.setQueryData<Message[]>(["messages", id], (old = []) =>
+        old.map((m) => (m.id === "tmp-ai" ? { ...m, content: text } : m))
+      );
 
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        fullContent += chunk;
-        setTemp(fullContent);
-      }
-
-      resetTemp();
-      return id; // pass id to onSuccess
+      return id;
     },
 
     onSuccess: (id) => {
@@ -72,5 +101,11 @@ export const useSendMessage = (chatId?: string) => {
 
       if (!chatId) router.replace(`/chat/${id}`);
     },
+
+    onError: (err) => {
+      console.error("sendMessage failed:", err);
+    },
   });
 };
+
+export const cancelSendMessage = () => currentAbort?.abort();

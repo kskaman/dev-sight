@@ -1,7 +1,7 @@
 import { auth } from "@/app/api/auth/auth";
 import { prisma } from "../../../../../../lib/prisma";
 import { google } from "@ai-sdk/google";
-import { streamText } from "ai";
+import { generateText } from "ai";
 import { NextRequest, NextResponse } from "next/server";
 import { Role } from "@prisma/client";
 
@@ -49,35 +49,27 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ chatId: string }> }
 ) {
+  /*  auth */
   const session = await auth();
-  if (!session?.user?.id) {
-    return new Response("Unauthorized", { status: 401 });
-  }
+  if (!session?.user?.id) return new Response("Unauthorized", { status: 401 });
 
+  /*  request body */
   const { chatId } = await params;
   const { content } = (await req.json()) as { content: string };
+  if (!content?.trim()) return new Response("Invalid message", { status: 400 });
 
-  if (!content || typeof content !== "string") {
-    return new Response("Invalid message", { status: 400 });
-  }
-
-  // ensure chat exists or create a chat
+  /* ensure chat exists, save USER message */
   const chat = await prisma.chat.upsert({
     where: { id: chatId },
     update: { updatedAt: new Date() },
-    create: { id: chatId, userId: session.user.id, title: "New chat" },
+    create: { id: chatId, userId: session.user.id, title: "Untitled Chat" },
   });
 
-  // Save user message
   await prisma.message.create({
-    data: {
-      chatId: chat.id,
-      role: Role.USER,
-      content,
-    },
+    data: { chatId: chat.id, role: Role.USER, content },
   });
 
-  // Fetch previous messages (context)
+  /* fetch last 30 for history */
   const messages = await prisma.message.findMany({
     where: { chatId: chat.id },
     orderBy: { createdAt: "asc" },
@@ -90,28 +82,46 @@ export async function POST(
     content: m.content,
   }));
 
-  let assistantBuf = "";
+  /* prepare abort chain: if client disconnects → abort Gemini */
+  const geminiCtrl = new AbortController();
+  req.signal.addEventListener("abort", () => geminiCtrl.abort());
 
-  const result = streamText({
-    model: google("gemini-1.5-pro-latest"),
-    messages: history,
-    onChunk: ({ chunk }) => {
-      if (chunk.type === "text-delta") assistantBuf += chunk.textDelta;
-    },
-    onFinish: async () => {
-      await prisma.message.create({
-        data: { chatId: chat.id, role: Role.ASSISTANT, content: assistantBuf },
-      });
+  let assistant: string | null = null;
 
-      // rename if it’s still “Untitled Chat”
-      if (chat.title === "Untitled Chat") {
-        await prisma.chat.update({
-          where: { id: chat.id },
-          data: { title: content.slice(0, 40) }, // first 40 chars of user prompt
-        });
-      }
-    },
+  try {
+    /* call Gemini */
+    const { text } = await generateText({
+      model: google("gemini-2.0-flash"),
+      messages: history,
+      abortSignal: geminiCtrl.signal, // ← pass signal
+    });
+    assistant = text;
+  } catch (err) {
+    if (
+      typeof err === "object" &&
+      err !== null &&
+      "name" in err &&
+      (err as { name?: unknown }).name === "AbortError"
+    ) {
+      console.log("Generation aborted - client closed request.");
+      return new Response(null, { status: 499 }); // Client Closed Request
+    }
+    throw err; // real error → bubble
+  }
+
+  /* store assistant reply */
+  await prisma.message.create({
+    data: { chatId: chat.id, role: Role.ASSISTANT, content: assistant },
   });
 
-  return result.toDataStreamResponse();
+  /* rename chat on first turn */
+  if (chat.title === "Untitled Chat") {
+    await prisma.chat.update({
+      where: { id: chat.id },
+      data: { title: content.slice(0, 10) },
+    });
+  }
+
+  /* respond with JSON (no stream) */
+  return NextResponse.json({ text: assistant });
 }

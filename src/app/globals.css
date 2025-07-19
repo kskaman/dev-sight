@@ -169,3 +169,41 @@
     letter-spacing: var(--tracking-normal);
   }
 }
+
+/* typing-ellipsis */
+@keyframes blink-dot {
+  0% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+  100% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+}
+
+.typing-dots {
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.typing-dots span {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  margin-right: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: blink-dot 1.4s infinite both;
+}
+
+.typing-dots .dot2 {
+  animation-delay: 0.2s;
+}
+.typing-dots .dot3 {
+  animation-delay: 0.4s;
+}

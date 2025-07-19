@@ -24,7 +24,7 @@ export default function ClientShell({ user, children }: Props) {
   }, []);
 
   return (
-    <div className="h-screen flex flex-row bg-background p-2 gap-2">
+    <div className="min-h-[100%] flex flex-row bg-background p-2 gap-2">
       {/* sidebar – desktop */}
       <div className="hidden lg:flex">
         <Sidebar

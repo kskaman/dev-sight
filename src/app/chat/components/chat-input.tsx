@@ -1,6 +1,9 @@
 "use client";
 
-import { useSendMessage } from "@/app/queries/messages";
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { cancelSendMessage, useSendMessage } from "@/app/queries/messages";
+
 import {
   AIInput,
   AIInputTextarea,
@@ -9,46 +12,70 @@ import {
   AIInputTools,
   AIInputSubmit,
 } from "@/components/ui/shadcn-io/input-ai";
-import { PaperclipIcon, SendIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { FormEventHandler } from "react";
+import { PaperclipIcon, SendIcon, XIcon } from "lucide-react";
 
 export default function ChatInput({ chatId }: { chatId?: string }) {
   const router = useRouter();
   const send = useSendMessage(chatId);
+  const [text, setText] = useState("");
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const message = formData.get("message");
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const msg = text.trim();
+    if (!msg) return;
 
-    if (!message || typeof message !== "string" || !message.trim()) return;
-
-    // Handle form submission
-    send.mutate(message.trim(), {
+    send.mutate(msg, {
       onSuccess: (id) => {
-        // navigate only when needed
+        // navigate to newly-created chat on first message
         if (!chatId) router.replace(`/chat/${id}`);
       },
     });
-
-    // Reset the form
-    event.currentTarget.reset();
+    setText("");
   };
 
   return (
     <div className="w-full">
       <AIInput onSubmit={handleSubmit}>
-        <AIInputTextarea placeholder="Ask anything..." />
+        <AIInputTextarea
+          placeholder="Ask anything..."
+          name="message"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          disabled={send.isPending}
+        />
+
         <AIInputToolbar>
           <AIInputTools>
-            <AIInputButton>
+            <AIInputButton type="button">
               <PaperclipIcon size={16} />
             </AIInputButton>
+            {send.isPending && (
+              <AIInputButton
+                type="button"
+                onClick={() => send.reset()} /* or abort streaming */
+              >
+                <XIcon size={16} />
+              </AIInputButton>
+            )}
           </AIInputTools>
-          <AIInputSubmit>
-            <SendIcon size={16} />
-          </AIInputSubmit>
+
+          {send.isPending ? (
+            /* “Stop generating” button */
+            <AIInputButton
+              type="button"
+              onClick={() => {
+                cancelSendMessage(); // abort fetch
+                send.reset(); // reset React-Query mutation
+              }}
+            >
+              <XIcon size={16} />
+            </AIInputButton>
+          ) : (
+            /* normal send */
+            <AIInputSubmit disabled={!text.trim()}>
+              <SendIcon size={16} />
+            </AIInputSubmit>
+          )}
         </AIInputToolbar>
       </AIInput>
     </div>
