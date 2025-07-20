@@ -51,7 +51,7 @@ export default function ClientShell({ user, children }: Props) {
             onClick={() => setOpen(false)}
           />
           {/* drawer */}
-          <div className="fixed inset-y-0 left-0 z-50 w-64 max-w-full">
+          <div className="fixed inset-y-0 left-0 z-50 max-w-full h-screen">
             <Sidebar
               user={user}
               isMinimized={false}

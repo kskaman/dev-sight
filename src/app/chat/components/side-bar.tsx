@@ -39,7 +39,7 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
 
   return (
     <aside
-      className={`flex h-[100vh-28px]
+      className={`flex h-full
       ${isMinimized ? "w-16" : "w-[300px]"} flex-col border-r bg-card
       border border-border rounded-lg px-2 py-2`}
     >
@@ -52,7 +52,8 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
         <Button
           onClick={onMinimize}
           variant="outline"
-          className="w-10 h-10 p-0 rounded-full cursor-pointer flex items-center justify-center"
+          className="w-10 h-10 p-0 rounded-full cursor-pointer 
+          flex items-center justify-center"
         >
           {isMinimized ? (
             <ChevronRight className="w-4 h-4" />
@@ -110,14 +111,14 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
       {!isMinimized && (
         <ScrollArea
           className="flex-1 my-4 px-2 py-3 h-5 border 
-        border-gray-300 rounded-[20px]"
+        border-gray-300 rounded-[20px] overflow-y-auto"
         >
           {filteredChats.length === 0 ? (
             <div className="h-full mx-4 flex items-center justify-start text-sm text-muted-foreground">
               No chats to show
             </div>
           ) : (
-            <div className="space-y-1">
+            <div className="space-y-3">
               {filteredChats.map((chat) => (
                 <ChatItem key={chat.id} chat={chat} />
               ))}
