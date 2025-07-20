@@ -104,6 +104,11 @@ export const useSendMessage = (chatId?: string) => {
 
     onError: (err) => {
       console.error("sendMessage failed:", err);
+      if ((err as Error).name === "AbortError") {
+        qc.setQueryData<Message[]>(["messages", chatId ?? "none"], (old = []) =>
+          old.filter((m) => m.id !== "tmp-ai")
+        );
+      }
     },
   });
 };
