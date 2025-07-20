@@ -24,7 +24,7 @@ export default function ClientShell({ user, children }: Props) {
   }, []);
 
   return (
-    <div className="min-h-[100%] flex flex-row bg-background p-2 gap-2">
+    <div className="h-screen flex flex-row bg-background p-2 gap-2 overflow-hidden">
       {/* sidebar – desktop */}
       <div className="hidden lg:flex">
         <Sidebar
@@ -34,12 +34,12 @@ export default function ClientShell({ user, children }: Props) {
         />
       </div>
 
-      <div className="flex flex-col flex-1">
+      <div className="h-full flex flex-col flex-1">
         {/* top navigation always visible */}
         <Topbar onToggle={() => setOpen(true)} />
 
         {/* main route content */}
-        <main className="h-full py-3">{children}</main>
+        <main className="flex-1 py-3 overflow-hidden">{children}</main>
       </div>
 
       {/* sidebar – mobile overlay */}

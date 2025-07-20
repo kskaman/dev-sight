@@ -4,7 +4,6 @@ import { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -36,7 +35,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="antialiased">
+      <body className="h-screen antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>

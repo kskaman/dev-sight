@@ -49,14 +49,6 @@ export default function ChatInput({ chatId }: { chatId?: string }) {
             <AIInputButton type="button">
               <PaperclipIcon size={16} />
             </AIInputButton>
-            {send.isPending && (
-              <AIInputButton
-                type="button"
-                onClick={() => send.reset()} /* or abort streaming */
-              >
-                <XIcon size={16} />
-              </AIInputButton>
-            )}
           </AIInputTools>
 
           {send.isPending ? (
@@ -67,12 +59,13 @@ export default function ChatInput({ chatId }: { chatId?: string }) {
                 cancelSendMessage(); // abort fetch
                 send.reset(); // reset React-Query mutation
               }}
+              className="cursor-pointer"
             >
               <XIcon size={16} />
             </AIInputButton>
           ) : (
             /* normal send */
-            <AIInputSubmit disabled={!text.trim()}>
+            <AIInputSubmit disabled={!text.trim()} className="cursor-pointer">
               <SendIcon size={16} />
             </AIInputSubmit>
           )}

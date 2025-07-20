@@ -16,7 +16,7 @@ export default function ChatShell({ chatId }: { chatId?: string }) {
   }, [msgs]);
 
   return (
-    <div className="flex flex-col items-center gap-4 flex-1 w-full mt-2">
+    <div className="flex flex-col items-center gap-4 flex-1 h-full w-full mt-2 overflow-hidden">
       <div className="flex flex-col gap-2 w-full md:w-[95%] h-full overflow-y-auto">
         {msgs.map((m) => (
           <div

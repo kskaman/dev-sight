@@ -39,7 +39,7 @@ export default function Sidebar({ user, isMinimized, onMinimize }: Props) {
 
   return (
     <aside
-      className={`flex h-full
+      className={`flex h-[100vh-28px]
       ${isMinimized ? "w-16" : "w-[300px]"} flex-col border-r bg-card
       border border-border rounded-lg px-2 py-2`}
     >
