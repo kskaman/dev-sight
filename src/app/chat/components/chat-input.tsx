@@ -42,6 +42,13 @@ export default function ChatInput({ chatId }: { chatId?: string }) {
           value={text}
           onChange={(e) => setText(e.target.value)}
           disabled={send.isPending}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && e.shiftKey) return;
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSubmit(e as unknown as FormEvent<HTMLFormElement>);
+            }
+          }}
         />
 
         <AIInputToolbar>

@@ -1,7 +1,7 @@
 import { auth } from "@/app/api/auth/auth";
 import { prisma } from "../../../../../../lib/prisma";
 import { google } from "@ai-sdk/google";
-import { generateText } from "ai";
+import { streamText } from "ai";
 import { NextRequest, NextResponse } from "next/server";
 import { Role } from "@prisma/client";
 
@@ -86,42 +86,24 @@ export async function POST(
   const geminiCtrl = new AbortController();
   req.signal.addEventListener("abort", () => geminiCtrl.abort());
 
-  let assistant: string | null = null;
-
-  try {
-    /* call Gemini */
-    const { text } = await generateText({
-      model: google("gemini-2.0-flash"),
-      messages: history,
-      abortSignal: geminiCtrl.signal, // ← pass signal
-    });
-    assistant = text;
-  } catch (err) {
-    if (
-      typeof err === "object" &&
-      err !== null &&
-      "name" in err &&
-      (err as { name?: unknown }).name === "AbortError"
-    ) {
-      console.log("Generation aborted - client closed request.");
-      return new Response(null, { status: 499 }); // Client Closed Request
-    }
-    throw err; // real error → bubble
-  }
-
-  /* store assistant reply */
-  await prisma.message.create({
-    data: { chatId: chat.id, role: Role.ASSISTANT, content: assistant },
+  const stream = streamText({
+    model: google("gemini-2.0-flash"),
+    messages: history,
+    onFinish: async ({ text }) => {
+      // 1️⃣ store assistant reply once full text is ready
+      await prisma.message.create({
+        data: { chatId: chat.id, role: Role.ASSISTANT, content: text },
+      });
+      // 2️⃣ rename chat on first turn
+      if (chat.title === "Untitled Chat") {
+        await prisma.chat.update({
+          where: { id: chat.id },
+          data: { title: content.slice(0, 10) },
+        });
+      }
+    },
   });
 
-  /* rename chat on first turn */
-  if (chat.title === "Untitled Chat") {
-    await prisma.chat.update({
-      where: { id: chat.id },
-      data: { title: content.slice(0, 10) },
-    });
-  }
-
-  /* respond with JSON (no stream) */
-  return NextResponse.json({ text: assistant });
+  /* stream straight back to the browser */
+  return stream.toDataStreamResponse();
 }

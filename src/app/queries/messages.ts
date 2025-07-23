@@ -82,14 +82,26 @@ export const useSendMessage = (chatId?: string) => {
         signal: ctrl.signal,
       });
 
-      if (!resp.ok) throw new Error(resp.statusText);
+      if (!resp.ok || !resp.body) throw new Error(resp.statusText);
 
-      const { text } = (await resp.json()) as { text: string };
+      /* ⬇️ read stream */
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let assistantText = "";
 
-      /* replace placeholder immediately */
-      qc.setQueryData<Message[]>(["messages", id], (old = []) =>
-        old.map((m) => (m.id === "tmp-ai" ? { ...m, content: text } : m))
-      );
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        assistantText += decoder.decode(value, { stream: true });
+
+        /* replace placeholder immediately */
+        qc.setQueryData<Message[]>(["messages", id], (old = []) =>
+          old.map((m) =>
+            m.id === "tmp-ai" ? { ...m, content: assistantText } : m
+          )
+        );
+      }
 
       return id;
     },
