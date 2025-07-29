@@ -36,7 +36,9 @@ export default function ClientShell({ user, children }: Props) {
 
       <div className="h-full flex flex-col flex-1">
         {/* top navigation always visible */}
-        <Topbar onToggle={() => setOpen(true)} />
+        <div className="flex lg:hidden">
+          <Topbar onToggle={() => setOpen(true)} />
+        </div>
 
         {/* main route content */}
         <main className="flex-1 py-3 overflow-hidden">{children}</main>
