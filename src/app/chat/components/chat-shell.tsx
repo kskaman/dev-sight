@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/shadcn-io/input-ai";
 import { PaperclipIcon, SendIcon, XIcon } from "lucide-react";
 
+import ReactMarkdown from "react-markdown"; // For rendering markdown content
+import remarkGfm from "remark-gfm"; // For GitHub Flavored Markdown support
+import rehypeSanitize from "rehype-sanitize"; // For sanitizing HTML content
+import rehypeHighlight from "rehype-highlight"; // For syntax highlighting
+
 export default function ChatShell({ chatId }: { chatId?: string }) {
   const hasReplaced = useRef(false); // guard so we do it once
 
@@ -66,7 +71,30 @@ export default function ChatShell({ chatId }: { chatId?: string }) {
                 : "bg-muted text-muted-foreground max-w-[80%]"
             }`}
           >
-            {m.content}
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeSanitize, rehypeHighlight]}
+              components={{
+                /* Inline code gets a pill, fenced code gets a dark block */
+                code({ className, children, ...props }) {
+                  const { inline } = props as { inline?: boolean };
+                  const match = /language-(\w+)/.exec(className || "");
+                  return !inline && match ? (
+                    <pre className="overflow-auto rounded-lg p-3 my-2 bg-gray-900">
+                      <code className={`language-${match[1]} text-gray-100`}>
+                        {String(children).replace(/\n$/, "")}
+                      </code>
+                    </pre>
+                  ) : (
+                    <code className="bg-muted px-1 py-0.5 rounded">
+                      {children}
+                    </code>
+                  );
+                },
+              }}
+            >
+              {m.content}
+            </ReactMarkdown>
           </div>
         ))}
 
