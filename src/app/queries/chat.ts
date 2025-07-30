@@ -49,9 +49,11 @@ export const useDeleteChat = (chatId: string) => {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["chats"] });
       // if user was viewing the deleted chat → go to blank shell
-      if (pathname === `/chat/${chatId}`) {
-        router.replace("/chat");
-      }
+      setTimeout(() => {
+        if (pathname === `/chat/${chatId}`) {
+          router.replace("/chat");
+        }
+      }, 50);
     },
   });
 };
