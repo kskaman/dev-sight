@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useRef } from "react";
 import { useMessages } from "@/app/queries/messages";
 import { useChat } from "@ai-sdk/react";
-
+import type { Message as AIMessage } from "ai";
 import {
   AIInput,
   AIInputTextarea,
@@ -18,27 +18,29 @@ import ReactMarkdown from "react-markdown"; // For rendering markdown content
 import remarkGfm from "remark-gfm"; // For GitHub Flavored Markdown support
 import rehypeSanitize from "rehype-sanitize"; // For sanitizing HTML content
 import rehypeHighlight from "rehype-highlight"; // For syntax highlighting
+import { WELCOME_MSG } from "../constants";
 
 export default function ChatShell({ chatId }: { chatId?: string }) {
   const hasReplaced = useRef(false); // guard so we do it once
 
   const { data: msgs = [] } = useMessages(chatId);
 
+  const dbMessages: AIMessage[] = msgs.map<AIMessage>((m) => ({
+    ...m,
+    role: (m.role === "USER"
+      ? "user"
+      : m.role === "ASSISTANT"
+      ? "assistant"
+      : "system") as AIMessage["role"],
+  }));
+
+  const initialMessages = dbMessages.length === 0 ? [WELCOME_MSG] : dbMessages;
+
   const { id, messages, input, handleInputChange, handleSubmit, stop, status } =
     useChat({
       id: chatId,
       api: "/api/chat/ai",
-      initialMessages: msgs.map((m) => ({
-        ...m,
-        role:
-          m.role === "USER"
-            ? "user"
-            : m.role === "ASSISTANT"
-            ? "assistant"
-            : m.role === "SYSTEM"
-            ? "system"
-            : m.role,
-      })),
+      initialMessages,
     });
 
   /* 🔹 once the real id arrives, patch the URL bar without navigation */
@@ -80,7 +82,7 @@ export default function ChatShell({ chatId }: { chatId?: string }) {
                   const { inline } = props as { inline?: boolean };
                   const match = /language-(\w+)/.exec(className || "");
                   return !inline && match ? (
-                    <pre className="overflow-auto rounded-lg p-3 my-2 bg-gray-900">
+                    <pre className="overflow-auto rounded-lg p-1 my-1 bg-gray-900">
                       <code className={`language-${match[1]} text-gray-100`}>
                         {String(children).replace(/\n$/, "")}
                       </code>
